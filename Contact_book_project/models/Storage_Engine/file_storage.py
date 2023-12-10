@@ -41,10 +41,10 @@ class FileStorage():
     def save(self):
         """safe the __contacts dictionary to a json file"""
         with open(self.__file_path, "w") as f:
-            real_obj = self.__contacts.copy()
-            for key, value in real_obj.items():
-                self.__contacts[key] = value.to_dict()
-            json.dump(self.__contacts, f)
+            real_obj = {}
+            for key, value in self.__contacts.items():
+                real_obj[key] = value.to_dict()
+            json.dump(real_obj, f)
 
     def reload(self):
         """load the json file back to the __contacts dictionary"""
