@@ -31,7 +31,7 @@ class FileStorage():
 
     def all(self) -> dict:
         """return all contacts as a dictionary"""
-        return FileStorage__contacts
+        return FileStorage.__contacts
 
     def new(self, obj):
         """store an instance to the __contacts dict"""

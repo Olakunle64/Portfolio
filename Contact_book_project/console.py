@@ -7,6 +7,7 @@
     """
 import cmd
 from models.Contact_Book import ContactBook
+from models import storage
 
 class contactConsole(cmd.Cmd):
     """A console for the ContactBook class"""
@@ -46,6 +47,26 @@ class contactConsole(cmd.Cmd):
         if isExists:
             print("{} created!".format(obj.phone_number))
 
+    def do_display(self, line):
+        """display the list of all contacts
+            To use this method just type <display>
+        """
+        for contact in storage.all().values():
+            print(str(contact))
+
+    def do_search(self, line):
+        """search for a particular contact details through phone
+            name.
+
+            Here is the guide on how to use this method:
+            search <name>
+        """
+        for contact in storage.all().values():
+            if contact.name == line.split()[0] or contact.phone_number == line.split()[0]:
+                print(str(contact))
+
+    def do_update(self, line):
+        """update any attribute in the contact details"""
 
 if __name__ == "__main__":
     contactConsole().cmdloop()
