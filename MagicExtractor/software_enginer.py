@@ -1,5 +1,6 @@
+#!/usr/bin/python3
 
-As a Software Engineer on the Vehicle Information Data (VID) team you will be crucial as our services go through an architectural overhaul to simplify the infrastructure, tune performance, and abstract our domain models to increase the supportability of future functionality. Through its user experiences, built upon a set of HTTP APIs, the VID team supports:
+pasted_text = """As a Software Engineer on the Vehicle Information Data (VID) team you will be crucial as our services go through an architectural overhaul to simplify the infrastructure, tune performance, and abstract our domain models to increase the supportability of future functionality. Through its user experiences, built upon a set of HTTP APIs, the VID team supports:
 the ingestion, creation, and delivery of millions of vehicle transaction records
 the vehicle valuation data as seen in the Hagerty Price Guide or Hagerty Valuation Tools
 the quoting of insurance premiums based on a vehicle’s valuation
@@ -10941,4 +10942,4 @@ JOB REQUIREMENT
 Master or foreign equivalent in Computer Science/Applications/Engineering, Computer/Management Information Systems, any Engineering or related field. In the alternative, will accept Bachelor or foreign equivalent in Computer Science/Applications/Engineering, Computer/Management Information Systems, any Engineering or related field plus five years of progressive experience in job offered or related work.
 Work Location: Decitech Consulting Inc, Fremont, CA
 HOW TO APPY?
-You can send CV to DeciTech Consulting Inc. 39420 Liberty Street, Suite 262, Fremont, CA 94538 email resumes to jsparkman@decitech-inc.com or fax to 510-796-1261
+You can send CV to DeciTech Consulting Inc. 39420 Liberty Street, Suite 262, Fremont, CA 94538 email resumes to jsparkman@decitech-inc.com or fax to 510-796-1261"""

@@ -3,10 +3,8 @@
 	to an email and phone number from a text"""
 
 import re
-# from website_text import pasted_text
-
-with open("software_enginer.txt", "r", encoding="utf-8") as f:
-    pasted_text = f.read()
+from software_enginer import pasted_text
+import json
 
 def email_extractor():
     """A regex to extract email from a text"""
@@ -43,11 +41,9 @@ if __name__ == "__main__":
             phone_number += ' x' + groups[3]
         matches_phone_number.append(phone_number)
     """
-    with open("software_enginer.txt", "r", encoding="utf-8") as f:
-        pasted_text = f.read()
     for groups in email_regex.findall(pasted_text):
         matches_email.append(groups[0])
     #print(matches_phone_number)
     print(matches_email)
-    with open("email_SE_scraped", "w") as f:
+    with open("email_SE_scraped.json", "w") as f:
         json.dump(matches_email, f)
