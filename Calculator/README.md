@@ -1,6 +1,6 @@
 <h2>This directory contains a working calculator</h2>
 
-Usage: <h5>integer <b>operand</b> integer</h5>
+Usage: <h5>integer <em>operand</em> integer</h5>
 	e.g 2 + 2 or 2 - 2.
 
 	--> Available operands includes +, -, *, **, /, %
