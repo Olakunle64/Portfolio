@@ -6,14 +6,14 @@
     and search contact.
     """
 import cmd
-from models.Contact_Book import ContactBook
+from models.toDoList import ToDoList
 from models import storage
 import re
 
-class contactConsole(cmd.Cmd):
+class toDoListConsole(cmd.Cmd):
     """A console for the ContactBook class"""
 
-    prompt = "Phone-->$ "
+    prompt = "toDoList-->$ "
 
     def do_quit(self, line):
         """a method to quit the console"""
@@ -30,67 +30,66 @@ class contactConsole(cmd.Cmd):
         """do not nothing when the user press just enter"""
         pass
 
-    def do_add(self, line):
-        """add new contact
+    def do_create(self, line):
+        """create new to do list
             Here is the the guide on how to use this method:
-                add <phone_number> <name>"""
+                create <title> <priority>"""
         details = line.split()
         if len(details) < 1:
-            print("***phone-number is missing***")
+            print("***title is missing***")
             return
         if len(details) < 2:
-            print("***name is missing***")
+            print("***priority is missing***")
             return
-        obj = ContactBook()
-        obj.phone_number = details[0]
-        obj.name = details[1]
-        isExists = obj.save()
-        if isExists:
-            print("{} created!".format(obj.phone_number))
+        if not details[1].isdigit() or (eval(details[1]) < 1 or eval(details[1]) > 5):
+            print("*** priority must be between 1-5 ***")
+            return
+        obj = ToDoList()
+        obj.title = details[0]
+        obj.priority = eval(details[1])
+        obj.save()
+        print("{} created!".format(obj.id))
 
     def do_display(self, line):
-        """display the list of all contacts
+        """display the list of all to do lists
             To use this method just type <display>
         """
-        for contact in storage.all().values():
-            print(str(contact))
+        for toDo in storage.all().values():
+            print(str(toDo))
 
     def do_search(self, line):
-        """search for a particular contact details through phone
-            number or name of the contact.
+        """search for a particular to do list through the id.
 
             Here is the guide on how to use this method:
-            search <name> OR search <phone_number>
+            search <id>
         """
-        for contact in storage.all().values():
-            if contact.name == line.split()[0] or contact.phone_number == line.split()[0]:
-                print(str(contact))
+        for toDo in storage.all().values():
+            if toDo.id == line.split()[0]:
+                print(str(toDo))
 
     def do_update(self, line):
-        """update any attribute in the contact details
+        """update any attribute in the to do lists
 
             Here is the guide to use this method:
-            update <phone_number> <attrINdictFORM>
+            update <obj_id> <attrINdictFORM>
         """
         if not line:
-            print("*** phone_number is missing ***")
+            print("*** id is missing ***")
             return
         arg_list = line.split('{')
         if len(arg_list) < 2:
             print("*** dict_attribute is missing ***")
             return
         details_to_update = '{' + arg_list[1].strip()
-        print(details_to_update)
         arg_list[0] = arg_list[0].strip()
         if not storage.all().get(arg_list[0]):
-            print("*** invalid phone_number ***")
+            print("*** invalid id ***")
             return
         obj = storage.all().get(arg_list[0])
         dict_regex = re.search(r'^{(.*)}$', details_to_update)
         if dict_regex:
             try:
                 dict_attr = eval(details_to_update.strip("'\""))
-                print(dict_attr)
                 for key, value in dict_attr.items():
                     setattr(obj, key, value)
                 storage.new(obj)
@@ -99,7 +98,6 @@ class contactConsole(cmd.Cmd):
                 print("*** let the attribute you want to update be in form of a dict ***")
                 return
             for key, value in dict_attr.items():
-                print(key, value)
                 setattr(obj, key, value)
             storage.new(obj)
             storage.save()
@@ -109,16 +107,16 @@ class contactConsole(cmd.Cmd):
     def do_delete(self, line):
         """ delete a to do list """
         if not line:
-            print("*** phone_number is missing ***")
+            print("*** id is missing ***")
             return
-        phone_number = line.split()[0]
+        id_val = line.split()[0]
         all_dict = storage.all()
-        if all_dict.get(phone_number):
-            del storage._FileStorage__to_do_lists[phone_number]
+        if all_dict.get(id_val):
+            del storage._FileStorage__to_do_lists[id_val]
             storage.save()
             storage.reload()
         else:
             print("*** invalid id ***")
 
 if __name__ == "__main__":
-    contactConsole().cmdloop()
+    toDoListConsole().cmdloop()

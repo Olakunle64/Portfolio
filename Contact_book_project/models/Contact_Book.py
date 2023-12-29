@@ -11,38 +11,19 @@ class ContactBook():
 
         instance attribute:
             name, phone number, email and address.
-        Note: name must be unique for all contacts
 
-        instance method:
-            display_contacts - display all contacts
-            search_contact - search for a contact either with
-                                name or phone number
-            update_contact - update the contact details
-            delete_contact - delete a contact.
+        Note: phone number must be unique for all contacts
     """
     def __init__(self, *args, **kwargs):
         """initializing the instance variables"""
         """for key, value in kwargs.items():
             print(key, value)"""
         if kwargs:
-            #setattr(self, key, value)
             for key, value in kwargs.items():
                 if key == "created_at" or key == "updated_at":
                     setattr(self, key, datetime.datetime.fromisoformat(value))
                 else:
                     setattr(self, key, value)
-                """if key == "name":
-                    self.name = value
-                elif key == "phone_number":
-                    self.phone_number = value
-                elif key == "email":
-                    self.email = value
-                elif key == "address":
-                    self.address = value
-                elif key == "created_at":
-                    self.created_at = datetime.datetime.fromisoformat(value)
-                elif key == "updated_at":
-                    self.updated_at = datetime.datetime.fromisoformat(value)"""
         else:
             self.name = ""
             self.phone_number = ""
@@ -50,8 +31,6 @@ class ContactBook():
             self.address = ""
             self.created_at = datetime.datetime.now()
             self.updated_at = self.created_at
-            #print(self.__dict__)
-            #models.storage.new(self)
 
     def __str__(self):
         """string implementation of an instance"""
@@ -60,8 +39,10 @@ class ContactBook():
     def to_dict(self):
         """return the dictionary attribute of an instance"""
         obj_dict = self.__dict__.copy()
-        obj_dict["created_at"] = datetime.datetime.isoformat(obj_dict["created_at"])
-        obj_dict["updated_at"] = datetime.datetime.isoformat(obj_dict["updated_at"])
+        obj_dict["created_at"] = datetime.datetime.isoformat(
+                obj_dict["created_at"])
+        obj_dict["updated_at"] = datetime.datetime.isoformat(
+                obj_dict["updated_at"])
         return obj_dict
 
     def save(self):
