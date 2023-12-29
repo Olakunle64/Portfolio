@@ -67,6 +67,22 @@ class toDoListConsole(cmd.Cmd):
             if toDo.id == line.split()[0]:
                 print(str(toDo))
 
+    def do_priority(self, line):
+        """search based on priority"""
+        if not line:
+            print("*** priority value is missing ***")
+            return
+        if not line.isdigit():
+            print("*** priority value must be an integer ***")
+            return
+        priority = int(line)
+        if priority < 1 or priority > 5:
+             print("*** priority value must be between 1 or 5 ***")
+             return
+        for obj in storage.all().values():
+            if obj.priority == priority:
+                print(obj)
+
     def do_update(self, line):
         """update any attribute in the to do lists
 
