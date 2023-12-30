@@ -6,13 +6,15 @@ import random
 ROCK, PAPER, SCISSORS = "rock", "paper", "scissors"
 ROUND_LIMIT = 3
 
+
 def determineWinner(userChoice, compChoice):
     """determine the winner between the user and computer
         based on their choices
     """
     if userChoice == compChoice:
         return "\nIt's a tie. Continue!\n"
-    if (userChoice, compChoice) in [(ROCK, PAPER), (SCISSORS, ROCK), (PAPER, SCISSORS)]:
+    if (userChoice, compChoice) in [
+            (ROCK, PAPER), (SCISSORS, ROCK), (PAPER, SCISSORS)]:
         return "\nYou Lose!\n"
     return "\nYou Win!\n"
 
@@ -45,10 +47,12 @@ if __name__ == "__main__":
         if round == ROUND_LIMIT:
             if computer_score > user_score:
                 print("End of the Match!")
-                print(f'\nYou lose the game! [{user_score}-{computer_score}]\n')
+                print(f'\nYou lose the game!\
+                        [{user_score}-{computer_score}]\n')
             else:
                 print("End of the Match!")
-                print(f'\nYou win the game! [{user_score}-{computer_score}]\n')
+                print(f'\nYou win the game!\
+                        [{user_score}-{computer_score}]\n')
             while True:
                 question = input("Do you wanna play again (yes/no)? ")
                 if question not in ['yes', 'no']:
