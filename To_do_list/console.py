@@ -5,10 +5,12 @@
     Display contact, add contact, delete contact, update contact
     and search contact.
     """
+
 import cmd
 from models.toDoList import ToDoList
 from models import storage
 import re
+
 
 class toDoListConsole(cmd.Cmd):
     """A console for the ContactBook class"""
@@ -41,7 +43,8 @@ class toDoListConsole(cmd.Cmd):
         if len(details) < 2:
             print("***priority is missing***")
             return
-        if not details[1].isdigit() or (eval(details[1]) < 1 or eval(details[1]) > 5):
+        if not (details[1].isdigit() or
+                (eval(details[1]) < 1 or eval(details[1]) > 5)):
             print("*** priority must be between 1-5 ***")
             return
         obj = ToDoList()
@@ -68,7 +71,11 @@ class toDoListConsole(cmd.Cmd):
                 print(str(toDo))
 
     def do_priority(self, line):
-        """search based on priority"""
+        """search based on priority
+
+            Here is the guide on how to use it:
+                priority <value>
+        """
         if not line:
             print("*** priority value is missing ***")
             return
@@ -77,8 +84,8 @@ class toDoListConsole(cmd.Cmd):
             return
         priority = int(line)
         if priority < 1 or priority > 5:
-             print("*** priority value must be between 1 or 5 ***")
-             return
+            print("*** priority value must be between 1 or 5 ***")
+            return
         for obj in storage.all().values():
             if obj.priority == priority:
                 print(obj)
@@ -88,6 +95,11 @@ class toDoListConsole(cmd.Cmd):
 
             Here is the guide to use this method:
             update <obj_id> <attrINdictFORM>
+
+            Here is how you specify the deadline attribute
+            of the dictionary attribute you want to pass in.
+
+            deadline: dd/mm/yy/ hr:min:sec
         """
         if not line:
             print("*** id is missing ***")
@@ -106,19 +118,25 @@ class toDoListConsole(cmd.Cmd):
         if dict_regex:
             try:
                 dict_attr = eval(details_to_update.strip("'\""))
+                if not dict_attr.get("deadline"):
+                    print("*** You must specify the <deadline>\
+                            for the task ***")
+                    return
                 for key, value in dict_attr.items():
                     setattr(obj, key, value)
                 storage.new(obj)
                 storage.save()
             except Exception as e:
-                print("*** let the attribute you want to update be in form of a dict ***")
+                print("*** let the attribute you want to\
+                        update be in form of a dict ***")
                 return
             for key, value in dict_attr.items():
                 setattr(obj, key, value)
             storage.new(obj)
             storage.save()
         else:
-            print("*** let the attribute you want to update be in form of a dict ***")
+            print("*** let the attribute you want to\
+                    update be in form of a dict ***")
 
     def do_delete(self, line):
         """ delete a to do list """
@@ -133,6 +151,7 @@ class toDoListConsole(cmd.Cmd):
             storage.reload()
         else:
             print("*** invalid id ***")
+
 
 if __name__ == "__main__":
     toDoListConsole().cmdloop()

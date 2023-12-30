@@ -6,6 +6,7 @@ import datetime
 import models
 import uuid
 
+
 class ToDoList():
     """This class contains a both instance attribute and
         methods
@@ -23,13 +24,14 @@ class ToDoList():
         if kwargs:
             for key, value in kwargs.items():
                 if key == "created_at":
-                    setattr(self, key, datetime.datetime.fromisoformat(value))
+                    setattr(
+                        self, key, datetime.datetime.fromisoformat(value))
                 else:
                     setattr(self, key, value)
         else:
             self.id = str(uuid.uuid4())
             self.title = ""
-            #self.priority = priority
+            # self.priority = priority
             self.task = ""
             self.taskBreakdown = ""
             self.created_at = datetime.datetime.now()
@@ -55,7 +57,8 @@ class ToDoList():
         print(arg_list)
         if any(arg_list) == None:
             raise ValueError("*** invalid input for the deadline ***")
-            self.__deadline = datetime.datetime(year=yr, month=mth, day=dy, hour=hr, minute=mint, second=secs)
+            self.__deadline = datetime.datetime(
+            year=yr, month=mth, day=dy, hour=hr, minute=mint, second=secs)
 
     @property
     def priority(self):
@@ -82,8 +85,10 @@ class ToDoList():
     def to_dict(self):
         """return the dictionary attribute of an instance"""
         obj_dict = self.__dict__.copy()
-        obj_dict["created_at"] = datetime.datetime.isoformat(obj_dict["created_at"])
-        #obj_dict["deadline"] = datetime.datetime.isoformat(obj_dict["deadline"])
+        obj_dict["created_at"] = datetime.datetime.isoformat(
+                obj_dict["created_at"])
+        # obj_dict["deadline"] = datetime.datetime.isoformat(
+        # obj_dict["deadline"])
         return obj_dict
 
     def save(self):
