@@ -35,6 +35,7 @@
     <li>display: This method display all existing to-do-lists in the storage engine</li>
     <li>update: This method update the to-do-list detail having the corresponding id with the dictionary attribute</li>
     <li>delete: This method delete the to-do-list with the corresponding id</li>
+    <li>priority: This method list the all to-do-lists having the priority value of the specified VALUE</li>
     <li>quit: This method quit the console</li>
     <li>help: This method shows help on how to use the console. <em>Note</em> that you can also specify you help by typing
         help with specific method you want to know more about.
