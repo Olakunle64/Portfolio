@@ -63,7 +63,7 @@ class contactConsole(cmd.Cmd):
             search <name> OR search <phone_number>
         """
         for contact in storage.all().values():
-            if contact.name == line.split()[0] or contact.phone_number == line.split()[0]:
+            if line.split()[0] in contact.name or line.split()[0] in contact.phone_number:
                 print(str(contact))
 
     def do_update(self, line):
