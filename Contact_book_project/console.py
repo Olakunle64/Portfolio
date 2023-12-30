@@ -5,10 +5,12 @@
     Display contact, add contact, delete contact, update contact
     and search contact.
     """
+
 import cmd
 from models.Contact_Book import ContactBook
 from models import storage
 import re
+
 
 class contactConsole(cmd.Cmd):
     """A console for the ContactBook class"""
@@ -63,7 +65,8 @@ class contactConsole(cmd.Cmd):
             search <name> OR search <phone_number>
         """
         for contact in storage.all().values():
-            if line.split()[0] in contact.name or line.split()[0] in contact.phone_number:
+            if (line.split()[0] in contact.name or
+                    line.split()[0] in contact.phone_number):
                 print(str(contact))
 
     def do_update(self, line):
@@ -96,7 +99,8 @@ class contactConsole(cmd.Cmd):
                 storage.new(obj)
                 storage.save()
             except Exception as e:
-                print("*** let the attribute you want to update be in form of a dict ***")
+                print("*** let the attribute you want to update\
+                        be in form of a dict ***")
                 return
             for key, value in dict_attr.items():
                 print(key, value)
@@ -104,7 +108,8 @@ class contactConsole(cmd.Cmd):
             storage.new(obj)
             storage.save()
         else:
-            print("*** let the attribute you want to update be in form of a dict ***")
+            print("*** let the attribute you want to\
+                    update be in form of a dict ***")
 
     def do_delete(self, line):
         """ delete a to do list """
@@ -119,6 +124,7 @@ class contactConsole(cmd.Cmd):
             storage.reload()
         else:
             print("*** invalid id ***")
+
 
 if __name__ == "__main__":
     contactConsole().cmdloop()

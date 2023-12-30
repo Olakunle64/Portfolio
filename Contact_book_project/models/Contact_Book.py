@@ -5,6 +5,7 @@
 import datetime
 import models
 
+
 class ContactBook():
     """This class contains a both instance attribute and
         methods
