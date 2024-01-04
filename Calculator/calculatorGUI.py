@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 """This module contains a class called <CalculatorGUI> and
     It's the GUI representation or desktop app calculator
 """

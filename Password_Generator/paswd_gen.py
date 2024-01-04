@@ -11,8 +11,8 @@ import random
 
 def paswdGen(arg):
     """generate a random password of length arg"""
-    symbols = ["/", "!", "#", "$", "%", "^", "&",
-            "*", "(", ")", "-", "_", "{", "}", ":", ";"]
+    symbols = ["/", "!", "#", "$", "%", "^", "&", "*"]
+    symbols.extend(["(", ")", "-", "_", "{", "}", ":", ";"])
     numbers = list(range(0, 9))
     upper_letters = [chr(i) for i in range(ord('A'), ord('Z') + 1)]
     small_letters = [chr(i) for i in range(ord('a'), ord('z') + 1)]
@@ -31,6 +31,7 @@ def paswdGen(arg):
         password += str(random.choice(mixture))
         i += 1
     return password
+
 
 if __name__ == "__main__":
     """ validate the user argument and call the paswdGen function """
