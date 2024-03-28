@@ -37,7 +37,7 @@ def save_emails_to_csv(emails):
     with open('emails.csv', 'a', newline='') as csvfile:
         writer = csv.writer(csvfile)
         for email in emails:
-            writer.writerow([email])
+            writer.writerow(email)
 
 def read_cover_letter_from_docx(docx_path):
     doc = Document(docx_path)
@@ -49,7 +49,7 @@ def read_cover_letter_from_docx(docx_path):
 driver = webdriver.Chrome()
 for t in range(10, 20, 10):
     emails = []
-    driver.get(f'https://www.indeed.com/jobs?q=software+engineer+email&start={t}&vjk=3c42553a23033564')
+    driver.get(f'https://www.indeed.com/jobs?q=software+engineer+email&l=United+States&start={t}&vjk=94b6a1dae1cdddb2')
     a =[1,2,3,4,5,7,8,9,10,11,13,14,15,16,17]
     for x in a:
         try:
@@ -74,11 +74,11 @@ password = "upog bpod axnl mhie"
 context = ssl.create_default_context()
 with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
     server.login(sender_email, password)
-    with open('emails.txt','rt') as csv_file:
+    with open('emails.csv','rt') as csv_file:
         # csv_reader = csv.reader(csv_file)
         for i, line in enumerate(csv_file):
-            subject = "Application For A Registered Nurse Role"
-            body =  read_cover_letter_from_docx('cover_letter.docx')
+            subject = "Interest in Advertised Job Position"
+            body =  read_cover_letter_from_docx('S_cover_letter.docx')
             
             receiver_email = line
             
@@ -96,30 +96,18 @@ with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
             message.attach(MIMEText(body, "plain"))
 
 
-            # with open('Olayinka_Fatoki_CV.pdf', 'rb') as attachment1:
-            #     part1 = MIMEApplication(attachment1.read())
-            #     part1.add_header('Content-Disposition', 'attachment1', filename='Olayinka_Fatoki_CV.pdf')
-            #     message.attach(part1) 
-            # with open('OLAYINKA_FATOKI_IELTS_RESULT.pdf', 'rb') as attachment2:
-            #     part2 = MIMEApplication(attachment2.read())
-            #     part2.add_header('Content-Disposition', 'attachment1', filename='OLAYINKA_FATOKI_IELTS_RESULT.pdf')
-            #     message.attach(part2) 
-            # with open('OLAYINKA_FATOKI_CBT_RESULT.pdf', 'rb') as attachment3:
-            #     part3 = MIMEApplication(attachment3.read())
-            #     part3.add_header('Content-Disposition', 'attachment1', filename='OLAYINKA_FATOKI_CBT_RESULT.pdf')
-            #     message.attach(part3)
-
-            # with open('FATOKI_NMC_PAGE.pdf', 'rb') as attachment5:
-            #     part5 = MIMEApplication(attachment5.read())
-            #     part5.add_header('Content-Disposition', 'attachment1', filename='FATOKI_NMC_PAGE.pdf')
-            #     message.attach(part5) 
-
-            # with open('FATOKI_OLAYINKA_Test_of_Competence_Invitation_CRM_00880327928.pdf', 'rb') as attachment6:
-            #     part6 = MIMEApplication(attachment6.read())
-            #     part6.add_header('Content-Disposition', 'attachment1', filename='FATOKI_OLAYINKA_Test_of_Competence_Invitation_CRM_00880327928.pdf')
-            #     message.attach(part6)   
-
-            # with open('exam_image3.jpeg', 'rb') as attachment4:
+            with open('Transcript-441113-SE.pdf', 'rb') as attachment1:
+                part1 = MIMEApplication(attachment1.read())
+                part1.add_header('Content-Disposition', 'attachment1', filename='Transcript - 441113 - Salau Isiaka')
+                message.attach(part1) 
+            with open('myCV.docx', 'rb') as attachment2:
+                part2 = MIMEApplication(attachment2.read())
+                part2.add_header('Content-Disposition', 'attachment1', filename='myCV.docx')
+                message.attach(part2) 
+            with open('python_IT_certificate.pdf', 'rb') as attachment3:
+                part3 = MIMEApplication(attachment3.read())
+                part3.add_header('Content-Disposition', 'attachment1', filename='python_IT_certificate.pdf')
+                message.attach(part3)
 
             texts = message.as_string()
 
@@ -132,5 +120,3 @@ with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
             print('success')
             
             time.sleep(1)
-
-
