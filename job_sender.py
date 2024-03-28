@@ -69,8 +69,8 @@ for t in range(10, 20, 10):
 driver.quit()
 
 # send the mails
-sender_email = "olakunleisiaq50@gmail.com"
-password = "upog bpod axnl mhie"
+sender_email = ""
+password = ""
 context = ssl.create_default_context()
 with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
     server.login(sender_email, password)

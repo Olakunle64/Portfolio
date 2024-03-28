@@ -1,6 +1,7 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 import time
+import re
 
 driver = webdriver.Chrome()
 for t in range(10, 400, 10):
