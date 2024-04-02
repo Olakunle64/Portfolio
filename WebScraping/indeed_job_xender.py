@@ -136,8 +136,8 @@ for keyword in keywords:
 
     
 # This part is for sending emails
-sender_email = "olakunleisiaq50@gmail.com" # sender email
-password = "upog bpod axnl mhie" # your app password
+sender_email = "" # sender email
+password = "" # your app password
 context = ssl.create_default_context()
 i = 0
 
