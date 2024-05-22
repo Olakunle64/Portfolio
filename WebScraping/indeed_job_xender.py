@@ -7,6 +7,7 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+import requests
 import time
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -22,6 +23,7 @@ from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import os
+import pyautogui as p
 
 
 def read_cover_letter_from_docx(docx_path):
@@ -59,25 +61,46 @@ def remove_file(file_path):
 # The beginning of email scrapping on indeed
 
 # add the keyword you want to search on indeed here
-keywords = ["software engineer email", "web developer email", "robotics email", "C programmer email", "data analytics email", "embedded programming email", "developer email", "junior developer email", "junior software engineer", "engineering email", "devops engineer email", "typist email"]
+# "animal science email remote", "agriculture email remote", 
+# keywords = ["animal science email remote", "agriculture email remote", "animal tech email remote", "animal robotics remote email", "lab research animal email remote", "graduate amimal scientist email remote", "agric python", "soil science email remote"]
+# "university of maryland email", "university of chicago email", "university email", "university computer email", "university developer email", "graduate assistant email", "university of arizona email", 
+# keywords = ["university of washington email", "university of manchester email", "university of houston email", "university of miami email"]
+# keywords = ["university email", "university computer email", "university developer email", "graduate assistant email"]  
+keywords = [
+    "bioinformatics email", "software engineer email remote", "web developer email remote",
+    "robotics email remote", "C programmer email remote", "data analytics email remote",
+    "embedded programming email remote", "python developer email remote",
+    "developer email remote", "junior developer email remote",
+    "junior software engineer remote", "engineering email remote",
+    "devops engineer email remote", "animal research email",
+    "typist email remote"
+    ]
+# keywords = ["animal research email"]
 for keyword in keywords:
+    # p.move(1, 1, duration=1)
     driver = webdriver.Chrome()
     driver.implicitly_wait(5)
-    driver.get('https://ca.indeed.com/') # add the url of any indeed website you want to scrape
+    # driver.get('https://www.indeed.com/q-usa-jobs.html?vjk=597d48348ffc1349') # add the url of any indeed website you want to scrape
+    # driver.get("https://ca.indeed.com/")
     print(f"scraping for -------{keyword}-----")
     try:
-        job_title = driver.find_element(By.ID, "text-input-what")
-        # job_title.clear()
+        time.sleep(2)
+        job_title = driver.find_element(By.XPATH, "//*[@id=\"text-input-what\"]")
+        job_title.clear()
         job_title.send_keys(keyword)
-        job_state = driver.find_element(By.ID, "text-input-where")
-        # job_state.clear()
-        # add the state you want to scrape on indeed
-        job_state.send_keys("Canada")
-        job_state.submit()
+        time.sleep(1)
+        driver.find_element(By.XPATH, "//*[@id=\"text-input-where\"]").send_keys("Canada")
+        # # job_state.clear()
+        # # add the state you want to scrape on indeed
+        # job_state = driver.find_element(By.ID, "text-input-where")
+        # job_state.send_keys("Canada")
+        
+        job_title.submit()
 
         next = 0
         while True:
             print(f"next {next}")
+            # p.move(-1, -1, duration=1)
             if next > 6:
                 break
             
@@ -132,7 +155,7 @@ for keyword in keywords:
         print(f"\t{e}")
     
     driver.quit()
-    # This is the end of email scrapping on indeed
+#     # This is the end of email scrapping on indeed
 
     
 # This part is for sending emails
@@ -147,6 +170,10 @@ with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
         for line in set(f.readlines()):
             eml = line.split("-")[0].strip()
             title = line.split("-")[1].strip()
+            if not title:
+                title = "Advertised Job"
+            # title = "Postdoctoral Research Associate(Quantitative Research and Data Analytics)"
+            # subject = "Intending M.S Student"
             subject = f"Interest in {title} Position"
             body =  read_cover_letter_from_docx('S_cover_letter.docx')
             
@@ -163,9 +190,9 @@ with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
                 part = MIMEApplication(attachment.read())
                 part.add_header('Content-Disposition', 'attachment', filename='Transcript-software-engineering.pdf')
                 message.attach(part) 
-            with open('myCV.docx', 'rb') as attachment:
+            with open('myCV.pdf', 'rb') as attachment:
                 part = MIMEApplication(attachment.read())
-                part.add_header('Content-Disposition', 'attachment', filename='myCV.docx')
+                part.add_header('Content-Disposition', 'attachment', filename='myCV.pdf')
                 message.attach(part)
             with open('Electronics_Engineering_Certificate.pdf', 'rb') as attachment:
                 part = MIMEApplication(attachment.read())
@@ -183,6 +210,7 @@ with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
                 pass
             i += 1
             print(f'{i}-----Sent email to {eml} as {title}')
+            # print(f'{i}-----Sent email to {eml} as')
         
             time.sleep(1)
-    remove_file("emails.txt")
+    # remove_file("emails.txt")
