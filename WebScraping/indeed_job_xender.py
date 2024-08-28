@@ -3,7 +3,7 @@
     and apply for job by sending a mail containing various attachement like resume,
     certificate, transcript e.t.c to all emails scrapped on indeed.
 """
-
+from cover_letter import CoverLetter
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -23,16 +23,6 @@ from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import os
-import pyautogui as p
-
-
-def read_cover_letter_from_docx(docx_path):
-    """This function read the text from a microsoft word document"""
-    doc = Document(docx_path)
-    cover_letter = ""
-    for paragraph in doc.paragraphs:
-        cover_letter += paragraph.text + "\n"
-    return cover_letter
 
 
 def find_emails_in_text(text):
@@ -58,42 +48,25 @@ def remove_file(file_path):
     else:
         print(f"File '{file_path}' does not exist.")
 
+
 # The beginning of email scrapping on indeed
 
-# add the keyword you want to search on indeed here
-# "animal science email remote", "agriculture email remote", 
-# keywords = ["animal science email remote", "agriculture email remote", "animal tech email remote", "animal robotics remote email", "lab research animal email remote", "graduate amimal scientist email remote", "agric python", "soil science email remote"]
-# "university of maryland email", "university of chicago email", "university email", "university computer email", "university developer email", "graduate assistant email", "university of arizona email", 
-# keywords = ["university of washington email", "university of manchester email", "university of houston email", "university of miami email"]
-# keywords = ["university email", "university computer email", "university developer email", "graduate assistant email"]  
-keywords = [
-    "bioinformatics email", "software engineer email remote", "web developer email remote",
-    "robotics email remote", "C programmer email remote", "data analytics email remote",
-    "embedded programming email remote", "python developer email remote",
-    "developer email remote", "junior developer email remote",
-    "junior software engineer remote", "engineering email remote",
-    "devops engineer email remote", "animal research email",
-    "typist email remote"
-    ]
-# keywords = ["animal research email"]
+keywords = [] # Add the keywords of the jobs you are looking for
+
 for keyword in keywords:
     # p.move(1, 1, duration=1)
     driver = webdriver.Chrome()
     driver.implicitly_wait(5)
-    # driver.get('https://www.indeed.com/q-usa-jobs.html?vjk=597d48348ffc1349') # add the url of any indeed website you want to scrape
-    # driver.get("https://ca.indeed.com/")
+    # driver.get(f'https://www.indeed.com/q-{keyword}-jobs.html?vjk=9a1554ea7adef5f7') # for United States Only
+    driver.get(f"https://au.indeed.com/jobs/?q={keyword}") # au for Australia, ca for Canada, uk for United Kingdom
     print(f"scraping for -------{keyword}-----")
     try:
         time.sleep(2)
         job_title = driver.find_element(By.XPATH, "//*[@id=\"text-input-what\"]")
-        job_title.clear()
-        job_title.send_keys(keyword)
+        # job_title.clear()
+        # job_title.send_keys(keyword)
         time.sleep(1)
-        driver.find_element(By.XPATH, "//*[@id=\"text-input-where\"]").send_keys("Canada")
-        # # job_state.clear()
-        # # add the state you want to scrape on indeed
-        # job_state = driver.find_element(By.ID, "text-input-where")
-        # job_state.send_keys("Canada")
+        driver.find_element(By.XPATH, "//*[@id=\"text-input-where\"]").send_keys("Austrailia")
         
         job_title.submit()
 
@@ -155,29 +128,31 @@ for keyword in keywords:
         print(f"\t{e}")
     
     driver.quit()
-#     # This is the end of email scrapping on indeed
+    # This is the end of email scrapping on indeed
 
     
 # This part is for sending emails
+newCover = CoverLetter()
 sender_email = "" # sender email
 password = "" # your app password
 context = ssl.create_default_context()
 i = 0
+not_sent = 0
+
 
 with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
     server.login(sender_email, password)
     with open('emails.txt', 'rt') as f:
         for line in set(f.readlines()):
             eml = line.split("-")[0].strip()
-            title = line.split("-")[1].strip()
-            if not title:
-                title = "Advertised Job"
-            # title = "Postdoctoral Research Associate(Quantitative Research and Data Analytics)"
-            # subject = "Intending M.S Student"
+            title = line.split("-")[1].strip() if len(line.split("-")) > 1 else "Advertised Job"
             subject = f"Interest in {title} Position"
-            body =  read_cover_letter_from_docx('S_cover_letter.docx')
             
+            newCover.position = title
+            body = newCover.get_cover_letter()
+
             receiver_email = eml.strip()  # Remove newline character
+            print(f"Sending to: {receiver_email}")
 
             message = MIMEMultipart()
             message["From"] = sender_email
@@ -186,31 +161,36 @@ with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
 
             message.attach(MIMEText(body, "plain"))
 
-            with open('Transcript-software-engineering.pdf', 'rb') as attachment:
-                part = MIMEApplication(attachment.read())
-                part.add_header('Content-Disposition', 'attachment', filename='Transcript-software-engineering.pdf')
-                message.attach(part) 
-            with open('myCV.pdf', 'rb') as attachment:
-                part = MIMEApplication(attachment.read())
-                part.add_header('Content-Disposition', 'attachment', filename='myCV.pdf')
-                message.attach(part)
-            with open('Electronics_Engineering_Certificate.pdf', 'rb') as attachment:
-                part = MIMEApplication(attachment.read())
-                part.add_header('Content-Disposition', 'attachment', filename='Electronics_Engineering_Certificate.pdf')
-                message.attach(part)
-            with open('python_IT_certificate.pdf', 'rb') as attachment:
-                part = MIMEApplication(attachment.read())
-                part.add_header('Content-Disposition', 'attachment', filename='python_IT_certificate.pdf')
-                message.attach(part)
+            # List of attachments
+            attachments = [
+                'Path to your attachement 1',
+                'Path to your attachement 2',
+                '.....'
+            ]
+
+            for attachment_path in attachments:
+                try:
+                    with open(attachment_path, 'rb') as attachment:
+                        part = MIMEApplication(attachment.read())
+                        part.add_header('Content-Disposition', f'attachment; filename={attachment_path.split("/")[-1]}')
+                        message.attach(part)
+                except FileNotFoundError:
+                    print(f"Attachment not found: {attachment_path}")
+                    continue  # Skip this attachment if not found
 
             try:
                 server.sendmail(sender_email, receiver_email, message.as_string())
-            except Exception:
-                print("An exception occured when trying to send the mail")
-                pass
-            i += 1
-            print(f'{i}-----Sent email to {eml} as {title}')
-            # print(f'{i}-----Sent email to {eml} as')
-        
-            time.sleep(1)
-    # remove_file("emails.txt")
+                i += 1
+                print(f'''---Sent email to {eml} as a {title}---
+                                        ||
+                                ======================
+                                Successful        {i}
+                                ======================
+                                Unsuccessful      {not_sent}
+                                ======================\n''')
+            except Exception as e:
+                print(f"An exception occurred when trying to send the mail: {e}")
+                not_sent += 1
+                continue
+            
+            time.sleep(1)  # Sleep for a second between sends
