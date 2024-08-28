@@ -54,7 +54,6 @@ def remove_file(file_path):
 keywords = [] # Add the keywords of the jobs you are looking for
 
 for keyword in keywords:
-    # p.move(1, 1, duration=1)
     driver = webdriver.Chrome()
     driver.implicitly_wait(5)
     # driver.get(f'https://www.indeed.com/q-{keyword}-jobs.html?vjk=9a1554ea7adef5f7') # for United States Only
@@ -73,7 +72,6 @@ for keyword in keywords:
         next = 0
         while True:
             print(f"next {next}")
-            # p.move(-1, -1, duration=1)
             if next > 6:
                 break
             
